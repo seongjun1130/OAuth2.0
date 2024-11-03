@@ -26,6 +26,9 @@ public class AuthService {
   @Value("${oauth2.kakao.client-secret}")
   private String kakaoKey;
 
+  @Value("${oauth2.kakao.redirect-uri}")
+  private String kakaoRedirectUri;
+
   public LoginResponseDto kakaoLogin(String code) throws JsonProcessingException {
     String accessToken = getKakaoAccessToken(code);
     UserInfoDto kakaoUserInfo = getKakaoUserInfo(accessToken);
@@ -47,7 +50,7 @@ public class AuthService {
     MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
     body.add("grant_type", "authorization_code");
     body.add("client_id", kakaoKey);
-    body.add("redirect_uri", "http://localhost:8080/api/oauth2/kakao/callback");
+    body.add("redirect_uri", kakaoRedirectUri);
     body.add("code", code);
     HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(body, headers);
     ResponseEntity<String> response =

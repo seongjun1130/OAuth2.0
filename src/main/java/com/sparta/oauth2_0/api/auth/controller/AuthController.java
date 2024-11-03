@@ -20,6 +20,9 @@ public class AuthController {
   @Value("${oauth2.kakao.client-secret}")
   private String kakaoKey;
 
+  @Value("${oauth2.kakao.redirect-uri}")
+  private String kakaoRedirectUri;
+
   // provider 에게 맞는 로그인 URI 및 redirect_uri 매칭
   @GetMapping("/{provider}/login")
   public RedirectView socialLogin(@PathVariable String provider) {
@@ -29,7 +32,7 @@ public class AuthController {
               + "?client_id="
               + kakaoKey
               + "&redirect_uri="
-              + "http://localhost:8080/api/oauth2/kakao/callback"
+              + kakaoRedirectUri
               + "&response_type=code";
       return new RedirectView(redirectUrl);
     }
